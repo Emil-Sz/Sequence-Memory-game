@@ -1,0 +1,907 @@
+\documentclass[]{report}
+
+
+
+% Title Page
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{csquotes}
+
+
+
+\geometry{a4paper, left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+\lstset{
+	language=C++,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue},
+	commentstyle=\color{green!40!black},
+	stringstyle=\color{red},
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=1,
+	numbersep=5pt,
+	backgroundcolor=\color{white},
+	frame=single,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+	captionpos=b,
+	caption=\lstname,
+	extendedchars=true,
+	inputencoding=utf8,
+	literate={ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {Ł}{{\L{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {Ś}{{\'S}}1  {ź}{{\'z}}1 {ż}{{\.z}}1,}
+
+\begin{document}
+
+	
+\begin{titlepage}
+	\centering
+	\includegraphics[width=\textwidth]{logowmit.png} % Zdjęcie na górze
+	\vspace{2cm}
+	
+	Kierunek: Inżynieria i Analiza Danych % Tekst "Kierunek"
+	
+	\vspace{1cm}
+	\includegraphics[width=0.3\textwidth]{PL.jpeg} % Mniejsze zdjęcie
+	
+	\vspace{1cm}
+	{\scshape\Large Sequence memory \par} % Temat raportu
+	
+	\vspace{1.5cm}
+	{\Large Emil Szewczak \par} % Autorzy
+	
+	\vfill
+	{\large \today\par}
+\end{titlepage}
+
+
+\tableofcontents
+	
+\newpage 
+
+
+	\section*{Wprowadzenie}
+	\addcontentsline{toc}{section}{1. Wstęp}
+	
+	Sequence memory to interaktywna aplikacja, w której gracze testują i doskonalą swoją zdolność do zapamiętywania sekwencji podświetlanych kwadratów. Gra jest stworzona w języku C++ przy użyciu biblioteki wxWidgets, co umożliwia dynamiczny interfejs graficzny. Projekt ten był wzorowany na grze Sequence Memory ze strony https://humanbenchmark.com.
+	
+	\subsection*{Cel Gry}
+	\addcontentsline{toc}{subsection}{1.1 Cel gry}
+	
+Gra Sequence Memory stawia przed graczem zadanie zapamiętywania i reprodukowania coraz bardziej wymagających sekwencji elementów, co rozwija zdolności poznawcze, takie jak spostrzeganie wzorców, koncentracja i zdolność do przewidywania. W trakcie rozgrywki uczestnik musi skupić uwagę na szczegółach, doskonalić umiejętność szybkiego rozpoznawania oraz utrzymywać informacje w pamięci krótkotrwałej. To nie tylko dostarcza przyjemności z rozgrywki, ale także sprzyja treningowi umysłowemu, co może mieć pozytywny wpływ na codzienne funkcje poznawcze.
+	
+	
+	\subsection*{Zasady Gry}
+	\addcontentsline{toc}{subsection}{1.2 Zasady gry}
+	
+	\begin{itemize}
+		\item Test Sekwencji ocenia Twoją pamięć wzrokową i umiejętność powtarzania wzorców.
+		\item Zadaniem jest powtórzenie sekwencji, którą zaprezentuje komputer. Sekwencje będą coraz dłuższe w każdej rundzie.
+		\item Kliknij na pola w odpowiedniej kolejności, tak jak zostały przedstawione wcześniej. Upewnij się, że klikasz dokładnie w tej samej kolejności.
+		\item Po powtórzeniu sekwencji, plansza zmieni kolor na zielony, jeśli odpowiedź jest poprawna lub na czerwony, jeśli popełniono błąd.
+		\item Zobaczysz również komunikat o wyniku i rundzie na górze ekranu.
+		\item Postaraj się pamiętać jak najdłuższe sekwencje, aby uzyskać jak najwyższy wynik!
+		\item Możesz wybrać jeden z pośród 3 poziomów trudności, różniących się wielkością planszy.
+		\item Zdecydować możesz też o ilości żyć, symbolizujących liczbę błędów, które możesz popełnić. Gdy ich zabraknie gra się skończy, a na ekranie pojawi się wynik.
+		\item Kliknij przycisk \enquote{Start} i zacznij testować swoją pamięć!
+		
+		
+	\end{itemize}
+\newpage
+\section*{Elementy Interfejsu Graficznego}
+\addcontentsline{toc}{section}{2. Elementy Interfejsu graficznego}
+
+Interfejs graficzny gry składa się z dwóch głównych elementów: głównego menu oraz planszy gry, zaprojektowanych w jasny i przejżysty sposób. 
+
+\subsection*{Główne Menu}
+\addcontentsline{toc}{subsection}{2.1 Menu główne}
+
+Główne menu jest centralnym punktem interakcji z użytkownikiem. Oferuje ono możliwość dostosowania ustawień przed rozpoczęciem gry. Składa się z czterech przycisków:
+\begin{itemize}
+	\item Dwóch rozwijanych:
+		\begin{itemize}
+			\item Poziom trudności - umożliwia wybór jednego z trzech poziomów trudności.
+			\item Liczba żyć - daje użytkownikowi wybór, co do ilości poziadanych żyć, podczas jednej rundy.
+		\end{itemize}
+	\item Zasady - uruchamia reguły gry.
+	\item Start - stanowi kluczowy przycisk w aplikacji, przenosi użytkownika na planszę oraz rozpoczyna rozgrywkę.
+\end{itemize}
+ Oprócz tego okno posiada możliwość zamknięcia oraz zminimalizowania.(rysunek~\ref{fig:menu})
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{1}
+		\caption{Główne menu}
+		\label{fig:menu}
+	\end{subfigure}
+	\hspace{1cm} % Dodaj odstęp 1 cm
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{wybor_poziomu.png}
+		\caption{Wybór poziomu trudności}
+		\label{fig:wybor_poziomu}
+	\end{subfigure}
+	\caption{Menu główne}
+	\label{fig:Interface_menu}
+\end{figure}
+
+
+\subsection*{Plansza Gry}
+\addcontentsline{toc}{subsection}{2.2 Plansza gry}
+
+Plansza gry jest obszarem, na którym odbywa się główna rozgrywka. Jest ona tworzona dynamicznie, a jej wielkość (ilość pól) zależy od poziomu trudności wybranego przez użytkownika. Składa się z kolorowych kwadratowych pól, które w poszczególnych etapach gry zostają sekwencyjnie podświetlone. W górnej części planszy znajduje się informacja dotycząca obecnej rundy oraz rysunki (serca), symbolizujące liczbę żyć, jakie pozostały użytkownikawi. W dolnej części natomiast został umieszczony przycisk \enquote{MENU}, pozwalający wrócić do menu gównego. Podobnie jak w przypadku okana Menu tu również gracz ma możliwość zamknięcia oraz zminimalizowania gry. (rysunek~\ref{fig:1}). 
+
+	
+\subsection* {Poziomy Trudności}
+\addcontentsline{toc}{subsection}{2.3 Poziomy trudności}
+
+Gra oferuje różne poziomy trudności, dając graczom możliwość dostosowania wyzwania do swoich umiejętności i preferencji. Każdy poziom trudności wpływa na  rozmiar planszy:
+
+\begin{itemize}
+	\item \textbf{Rozmiar Planszy:} W miarę wzrostu poziomu trudności, plansza gry staje się większa, co wymaga od gracza większego skupienia uwagi i umiejętności lepszego zapamiętywania.
+	\subitem Łatwy poziom zawiera planszę rozmiarem 3x3 (rysunek \ref{fig:1}). 
+	\subitem Średni poziom zawiera planszę rozmiarem 4x4 (rysunek~\ref{fig:2}). 
+	
+
+	\subitem Trudny poziom zawiera planszę rozmiarem 5x5 (rysunek~\ref{fig:3}). 
+\end{itemize}
+	
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.28\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{2.png}
+		\caption{Poziom łatwy}
+		\label{fig:1}
+	\end{subfigure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{3.png}
+		\caption{Poziom średni}
+		\label{fig:2}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{poziom_trudny.png}
+		\caption{Poziom trudny}
+		\label{fig:3}
+	\end{subfigure}
+	\caption{Różnorodność poziomów}
+	\label{fig:Różnorodność poziomów}
+\end{figure}
+
+	
+
+\newpage
+
+\subsection*{Efekty Naciśnięcia Poprawnego Kwadratu lub Przegrania}
+\addcontentsline{toc}{subsection}{2.4 Efekty Naciśnięcia Poprawnego Kwadratu lub Przegrania}
+
+
+Po każdym naciśnięciu kwadratu na planszy, gra reaguje zgodnie z poniższymi zasadami:
+
+
+
+\begin{itemize}
+	\item \textbf{Naciśnięcie Poprawnego Kwadratu:} Jeśli gracz poprawnie naciśnie kwadrat zgodnie z aktualną sekwencją, gra rejestruje poprawne naciśnięcie, a plansza wyświetla się na zielony kolor i przechodzi do kolejnego etapu sekwencji (rysunek~\ref{fig:correct}).
+	
+			\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.3\textwidth]{correct}
+		\caption{Uzyskanie poprawnej odpowiedzi}
+		\label{fig:correct}
+	\end{figure}
+	
+	
+	\item \textbf{Przegrana:} Jeśli gracz popełni błąd i naciśnie niewłaściwy kwadrat, liczba żyć zmniejsza się, a pola podświetlają się kolor czerwony. 
+	\subitem Jeśli liczba żyć osiągnie zero, gra kończy się. Na ekranie pojawia się inforamcja o przegranej oraz rundzie na której zakończyła się rozgrywka. (rysunek~\ref{fig:wrong}).
+\end{itemize}
+
+	
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{wrong}
+	\caption{Uzyskanie złej odpowiedzi}
+	\label{fig:wrong}
+\end{figure}
+
+
+Warto zauważyć, że wybór poziomu trudności wpływa nie tylko na samą rozgrywkę, ale także na doświadczenie użytkownika, dostosowując się do różnych poziomów umiejętności i preferencji.
+\newpage 
+
+	\section *{Struktura Kodu}
+	\addcontentsline{toc}{section}{3. Struktura kodu}
+	Kod źródłowy składa się z dwóch plików nagłówkowych oraz dwóch plików \texttt{cpp}. 
+
+	
+	\subsection*{seqMain.h}
+	\addcontentsline{toc}{subsection}{3.1 Plik seqMain.h}
+	Plik nagłówkowy w języku C++ definiuje główną klasę dialogową (seqDialog) dla aplikacji opartej na bibliotece wxWidgets. Oto kilka kluczowych elementów pliku:
+	
+	\begin{itemize}
+		
+		\item \textbf{Dołączenie bibliotek:} Plik dołącza standardowe nagłówki biblioteki C++ (<vector> i <map>) oraz zewnętrzny plik nagłówkowy "seq.h".
+		
+		\begin{lstlisting}
+			//...
+			#include <vector>
+			#include "seq.h"
+			#include <map>
+			//...
+		\end{lstlisting}
+		
+		\item \textbf{Deklaracja klasy:} Jest to deklaracja klasy seqDialog, dziedziczącej po klasie wxDialog, która reprezentuje główne okno dialogowe aplikacji.
+		
+		\begin{lstlisting}
+			class seqDialog: public wxDialog
+			{
+				// ... (treść klasy)
+			};
+		\end{lstlisting}
+		
+		\item \textbf{Metody publiczne:} Na początku deklarowany jest konstuktor i destruktor klasy seqDialog. Następnie dodaliśmy własne funckje umożliwiające lepszą przejżystość kodu i zmniejszenie redundancji.
+		
+		\begin{lstlisting}
+			//...
+			public:
+				seqDialog(wxWindow* parent,wxWindowID id = -1);
+				virtual ~seqDialog();
+				
+				void RepeatUserSequence();
+				void StanPoczatkowyPola(std::vector<wxButton*> pola, wxColour kolor, bool wlacz);
+				void CzyMenu(bool tak);
+				void UstawRozmiar(int szerokosc, int wysokosc);
+			//...
+		\end{lstlisting}
+		\begin{itemize}
+				\item \textit{\textbf{void RepeatUserSequence();}}Metoda, która odpowiada za powtórzenie sekwencji, w przypadku gdy użytkownik się pomylił i ma jeszcze życia.
+			
+			\item \textit{\textbf{void StanPoczatkowyPola(std::vector<wxButton*> pola, wxColour kolor, bool wlacz);}} Metoda, która zmienia pola (kwadraty). Może zmienić kolor tła przycisków a także ustawić czy są włączone, czy wyłączone (czy można w nie kliknąć).
+			
+			\item \textit{\textbf{void CzyMenu(bool tak);}} Metoda odpowiedzialna za wyświetlenie bądź schowanie interfejsu menu w odpowiednich sytuacjach.
+			
+			\item \textit{\textbf{void UstawRozmiar(int szerokosc, int wysokosc);}} Metoda ustawiająca rozmiar okna dialogowego gry, w zależnosci od poziomu trudności.
+			
+		\end{itemize}
+		
+		\item \textbf{Pola prywatne:} Stworzyliśmy kilka zmiennych, używanych przez naszą gre.
+		
+		\begin{lstlisting}
+			//...
+			wxFlexGridSizer* FlexGridSizer2;
+			std::vector<wxButton*> pola;
+			int liczba_pol;
+			std::map<int,int> id2nr;
+			wxBitmap serce;
+			wxColour kolory[4];
+			Sequence * gra;
+			vector<int> userSeq;
+			int liczba_rund = 1;
+			wxString w;
+			int zycia;
+			int poziom_trudnosci;
+			wxFlexGridSizer* sizer;
+			wxColour backgroundColor;
+			bool sizer_ustawiony=false;
+			//...
+		\end{lstlisting}
+		
+		\begin{itemize}
+			\item \textit{\textbf{wxFlexGridSizer* FlexGridSizer2;}} Jest to wskaźnik na obiekt typu wxFlexGridSizer, który  reprezentuje siatkę do ułożenia elementów w interfejsie użytkownika.
+			
+			\item \textbf{\textit{std::vector<wxButton*> pola;}} Jest to wektor przechowujący wskaźniki do obiektów typu wxButton.  Służy do przechowywania przycisków (kwadratów) w interfejsie użytkownika.
+			
+			\item \textit{\textbf{int liczba\_pol;}} Zmienna przechowująca liczbę pól. Używana jest do utworzenia różnych rozmiarów planszy w zależności od poziomu trudności.
+			
+			\item \textit{\textbf{std::map<int,int> id2nr;}} Jest to mapa (asocjacyjna tablica), która mapuje identyfikatory przycisków wxButton (int) na odpowiadające im numery (int) w wektorze. 
+			
+			\item \textit{\textbf{wxBitmap serce;}} Jest to obiekt reprezentujący bitmapę (obraz), która reprezentuje grafikę serca. Używana w celu wyświetlenia serc w zależności od liczby żyć.
+			
+			\item \textit{\textbf{wxColour kolory[4];}} Tablica przechowująca cztery obiekty typu wxColour,  reprezentujące różne kolory. Używana w kontekście kolorowania elementów interfejsu użytkownika.
+			
+			\item \textit{\textbf{Sequence * gra;}} Wskaźnik na nowy obiekt typu Sequence, co sugeruje, że klasa seqDialog korzysta z klasy Sequence.
+			
+			\item \textit{\textbf{vector<int> userSeq;}} Wektor przechowujący sekwencję liczb całkowitych, którą wprowadził użytkownik, poprzez kliknięcie w odpowiednie pola.
+			
+			\item \textit{\textbf{int liczba\_rund = 1;}} Zmienna przechowująca liczbę rund. Służy do śledzenia postępu gry.
+			
+			\item \textit{\textbf{wxString w;}} Obiekt reprezentujący ciąg znaków (wxString), służy do przechowywania komunikatów dla użytkownika.
+			
+			\item \textit{\textbf{int zycia;}} Zmienna przechowująca liczbę żyć w grze. Używana w kontekście gry, gdzie gracz ma określoną liczbę szans. Wartość zostanie pobrana z przycisku wxChoice.
+			
+			\item \textit{\textbf{int poziom\_trudnosci;}} Zmienna przechowująca poziom trudności gry. Im większy poziom trudności, tym więcej pól pojawia się na planszy. Wartość zostanie pobrana z przycisku wxChoice.
+			
+			\item \textit{\textbf{wxFlexGridSizer* sizer;}} Wskaźnik na obiekt typu wxFlexGridSizer. Jest używany do ustawiania pól w odpowiednim układzie.
+			
+			\item \textit{\textbf{wxColour backgroundColor;}} Obiekt reprezentujący kolor tła w interfejsie użytkownika.
+			
+			
+			\item \textit{\textbf{bool sizer\_ustawiony=false;}} Zmienna typu boolowskiego, która informuje, czy sizer został już ustawiony. Używana do sprawdzania, czy układ interfejsu został już skonfigurowany.
+		\end{itemize}
+		
+	\end{itemize}
+	
+	\newpage
+	
+	\subsection*{seq.h}
+	\addcontentsline{toc}{subsection}{3.2 Plik seq.h}
+	Plik nagłówkowy w języku C++ definiuje klase seq dla aplikacji opartej na bibliotece wxWidgets. Oto kilka kluczowych elementów pliku:
+	
+	\begin{itemize}
+		\item \textbf{Dołączenie bibliotek:} Plik dołącza standardowe nagłówki biblioteki C++ (<iostream> i <vector>) oraz definiuje przestrzeń nazw jako std.
+		
+		\begin{lstlisting}
+			//...
+			#include <iostream>
+			#include <vector>
+			
+			using namespace std;
+			//...
+		\end{lstlisting}
+		
+		\item \textbf{Deklaracja klasy:} Jest to deklaracja klasy Sequence, która reprezentuje logikę gry.
+		
+		\begin{lstlisting}
+			class Sequence
+			{
+				//...
+			};
+			
+		\end{lstlisting}
+		
+		\item \textbf{Deklaracja klasy:} Klasa Sequence zawiera klika zmiennych oraz metod publicznych.
+		
+		\begin{lstlisting}
+			//...
+			public:
+			vector<int> seq;
+			int rozmiar_kwadratu=3;
+			int liczba_zyc=1;
+			Sequence();
+			~Sequence();
+			void addElement();
+			int get_rozmiar_kwadratu();
+			int get_liczba_zyc();
+			void set_rozmiar_kwadratu(int rozmiar);
+			void set_liczba_zyc(int liczba);
+			//...
+		\end{lstlisting}
+		
+		\begin{itemize}
+			\item \textbf{\textit{vector<int> seq;}} Wektor przechowujący sekwencję liczb całkowitych, która jest generowana automatycznie.
+			
+			\item \textbf{\textit{int rozmiar-kwadratu=3;}} Zmienna przechowująca domyślną ilość kwadratów w pionie i poziomie.
+			
+			\item \textbf{\textit{int liczba-zyc=1;}} Zmienna przechowująca domyślną liczbę żyć w grze.
+			
+			\item Następnie jest deklaracja konstruktora i destruktora klasy.
+			
+			\item \textbf{\textit{void addElement();}} Metoda dodająca element do sekwencji.
+			
+			\item \textbf{\textit{int get-rozmiar-kwadratu();}} Metoda zwracająca ilość kwadratów w pionie i poziomie.
+			
+			\item \textbf{\textit{int get-liczba-zyc();}} Metoda zwracająca liczbę żyć.
+			
+			\item \textbf{\textit{void set-rozmiar-kwadratu(int rozmiar);}} Metoda ustawiająca liczbę kwadratów w pionie i poziomie na argument rozmiar.
+			
+			\item \textbf{\textit{void set-liczba-zyc(int liczba);}} Metoda ustawiająca liczbę żyć na argument liczba.
+		\end{itemize}
+		
+	\end{itemize}
+	
+	\newpage
+	
+	\subsection*{seq.cpp}
+	\addcontentsline{toc}{subsection}{3.3 Plik seq.cpp}
+	Plik zawiera implementację klasy Sequence. Oto jego podstawowe elementy:
+	\begin{itemize}
+		\item \textbf{Początek pliku:} Na począrtku dołączony jest plik "seq.h", ustawiona przestrzeń nazw na std oraz zaimplementowany konstruktor i destruktor.
+		\begin{lstlisting}
+			#include "seq.h"
+			using namespace std;
+			Sequence::Sequence(){}
+			Sequence::~Sequence(){}
+		\end{lstlisting}
+		\item \textbf{addElement} Procedura add element dodaje element do vektora seq. Element jest generowany automatycznie to liczba losowa z przedziału od 0 do ilości pól na planszy.
+		\begin{lstlisting}
+			void Sequence::addElement(){
+				int losowaLiczba = std::rand() % (rozmiar_kwadratu*rozmiar_kwadratu);
+				seq.push_back(losowaLiczba);
+			}
+		\end{lstlisting}
+		\item \textbf{get\_rozmiar\_kwadratu} Metoda get rozmiar kwadratu zwraca liczbę całkowitą przechowywaną w zmiennej rozmiar kwadratu.
+		\begin{lstlisting}
+			int Sequence::get_rozmiar_kwadratu(){
+				return rozmiar_kwadratu;
+			}
+		\end{lstlisting}
+		\item \textbf{get\_liczba\_zyc} Metoda get liczba zyc zwraca liczbę całkowitą przechowuwaną w zmiennej liczba żyć.
+		\begin{lstlisting}
+			int Sequence::get_liczba_zyc(){
+				return liczba_zyc;
+			}
+		\end{lstlisting}
+		\item \textbf{set\_rozmiar\_kwadratu} Procedura ustawia rozmiar kwadratu obiektu klasy sequence na argument rozmiar. 
+		\begin{lstlisting}
+			void Sequence::set_rozmiar_kwadratu(int rozmiar){
+				rozmiar_kwadratu = rozmiar;
+			}
+		\end{lstlisting}
+		\item \textbf{set\_liczba\_zyc} Procedura ustawia liczbę żyć obiektu klasy sequence na argument liczba. 
+		\begin{lstlisting}
+			void Sequence::set_liczba_zyc(int liczba){
+				liczba_zyc = liczba;
+			}
+		\end{lstlisting}
+	\end{itemize}
+	
+	\newpage
+	
+	\subsection*{seqMain.cpp}
+	\addcontentsline{toc}{subsection}{3.4 Plik seqMain.cpp}
+	Plik implementuje okno dialogowe aplikacji. Oto przykładowe funkcjonalności w tym pliku:
+	\begin{itemize}
+		\item \textbf{Początek pliku:} Na początku pliku oprócz standardowych akcji wykonywanych przez wxWidgets dodaliśmy funkcję, która umożliwia wyświetlanie znaków polskich w aplikacji.
+		\begin{lstlisting}
+			#undef _
+			#define _(s) wxString::FromUTF8(s)
+		\end{lstlisting}
+		\item \textbf{konstruktor klasy seqDialog:} Ustawia on odpowiednie pola wstawione przez wxWidgets. Dodaliśmy do niego klika funkcjonalności.
+		\begin{lstlisting}
+			seqDialog::seqDialog(wxWindow* parent,wxWindowID id)
+			{
+				//...
+				Button2->Show(false);
+				serce = wxBitmap(wxImage("serce.png"));
+				kolory[0] = wxColour(200, 150, 255); 
+				kolory[1] = wxColour(171, 32, 253); 
+				kolory[2] = wxColour(255,0,0);
+				kolory[3] = wxColour(0,200,0);
+				backgroundColor = wxColour(230, 230, 250);
+				sizer = new wxFlexGridSizer(3, 3, 0, 0);
+				gra = nullptr;
+				srand(time(0));
+				UstawRozmiar(240,240);
+				SetBackgroundColour(backgroundColor);
+				this->FlexGridSizer2 = FlexGridSizer2;
+				SetIcon(wxICON(aaaa));
+			}
+		\end{lstlisting}
+		\begin{itemize}
+			\item \textbf{\textit{Button2->Show(false);}} Wyłączenie widocznosci przycisku 2 (odpowiada on za powrót do menu).
+			\item \textbf{\textit{serce = wxBitmap(wxImage("serce.png"));}} Przypisanie zmiennej serce odpowiadającej pliku.
+			\item \textbf{\textit{kolory[i]=...}} Przypisanie kolorów używanych w aplikacji.
+			\item \textbf{\textit{backgroundColor = wxColour(230, 230, 250);}} Przypisanie koloru tła okna dialogowego.
+			\item \textbf{\textit{sizer = new wxFlexGridSizer(3, 3, 0, 0);}} Utworzenie nowego sizera, przechowującego pola do gry.
+			\item \textbf{\textit{gra = nullptr;}} Przypisanie wkaźnikowi gry pustego obiektu.
+			\item \textbf{\textit{srand(time(0));}} Inicjalizuje generator liczb pseudolosowych przy użyciu aktualnego czasu.
+			\item \textbf{\textit{UstawRozmiar(240,240);}} Wywołuje funkcję ustaw rozmiar, która zmienia rozmiar okna dialogowego na 240x240px.
+			\item \textbf{\textit{SetBackgroundColour(backgroundColor);}} Zmienia kolor tła okna dialogowego na ustawiony wcześniej kolor.
+			\item \textbf{\textit{this->FlexGridSizer2 = FlexGridSizer2;}} Przypisuje wskaźnik FlexGridSizer2 do zmiennej FlexGridSizer2 w klasie seqDialog.
+			\item \textbf{\textit{SetIcon(wxICON(aaaa));}} Ustawia ikonę okna dialogowego.
+		\end{itemize}
+		\item \textbf{PrzyciskStart:} Związany jest ze startem gry, po nacisnięciu przycisu start i wybraniu odpowiednich opcji. Oto jego funkcje:
+		\begin{itemize}
+			\item Pobranie poziomu trudności z przycisku Choice1 i liczby żyć z przyciusku Choice2.
+			\begin{lstlisting}
+				//...
+				poziom_trudnosci = Choice1->GetCurrentSelection();
+				zycia = Choice2->GetCurrentSelection()+1;
+				//...
+			\end{lstlisting}
+			\item Przygotowanie nowej gry i usunięcie starej w przypadku, gdy nie została jeszcze usunięta
+			\begin{lstlisting}
+				//...
+				if (gra != nullptr){
+					delete gra;
+					gra = nullptr;
+				}
+				gra = new Sequence();
+				//...
+			\end{lstlisting}
+			\item Dodanie do wcześniej przygotowanej gry nowego elementu, ustawienie liczby żyć na wartość pobraną z pola Choice2 i ustawienie rozmiaru kwadratu (liczby wyświetlanych pól) w zależności od poziomu trudności.
+			\begin{lstlisting}
+				//...
+				gra->addElement();
+				gra->set_rozmiar_kwadratu(poziom_trudnosci+3);
+				gra->set_liczba_zyc(zycia);
+				//...
+			\end{lstlisting}
+			\item Ukrycie menu, poprzez wywołanie funkcji czy menu z argumentem false.
+			\begin{lstlisting}
+				//...
+				CzyMenu(false);
+				//...
+			\end{lstlisting}
+			\item Ustawienie liczby kolumny i werszy sizerowi, który przechowuje pola do gry. (liczba wierszy i kolumn są równe i zależą od poziomu trudności wybranego przez użytkownika).
+			\begin{lstlisting}
+				//...
+				sizer->SetCols(gra->get_rozmiar_kwadratu());
+				sizer->SetRows(gra->get_rozmiar_kwadratu());
+				//...
+			\end{lstlisting}
+			\item Utworzenie nowych przycisków, które są polami do gry. Tworzymy je w pętli od 0 do liczby kolumn razy liczba wierszy. Ustawiamy tym polom rozmiar 100x100px. Dodajemy do sizera te pola oraz łączymy je z funkcją PrzyciskPola, wywołującą się po kliknięciu danego przycisku. Na końcu dodajemy utworzone pola do wektora przechowującego te pola.
+			\begin{lstlisting}
+				//...
+				for (int i = 0; i < gra->get_rozmiar_kwadratu() * gra->get_rozmiar_kwadratu(); i++)
+				{
+					wxButton* nowe_pole = new wxButton(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxString::Format("ID_BUTTON%d", i));
+					nowe_pole->SetSize(wxSize(100, 100));
+					nowe_pole->Disable();
+					sizer->Add(nowe_pole, 1, wxEXPAND | wxFIXED_MINSIZE, 5);
+					Connect(nowe_pole->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&seqDialog::PrzyciskPole);
+					
+					pola.push_back(nowe_pole);
+				}
+				//...
+			\end{lstlisting}
+			\item Przypisanie id przycisków z wektora pola odpowiadającym im numerom indeksów w wektorze.
+			\begin{lstlisting}
+				//...
+				for(int i = 0; i<gra->get_rozmiar_kwadratu()*gra->get_rozmiar_kwadratu(); i++){
+					id2nr[pola[i]->GetId()]=i;
+				}
+				//...
+			\end{lstlisting}
+			\item Ustawienie pól na kolor podstawowy, wyłączenie możliwości ich kliknięcia.
+			\begin{lstlisting}
+				//...
+				StanPoczatkowyPola(pola, kolory[0], false);
+				//...
+			\end{lstlisting}
+			\item Dodanie sizera przechowującego pola do gry do FlexGridSizer2 tylko, gdy jeszcze nie był dodany.
+			\begin{lstlisting}
+				//...
+				if (!sizer_ustawiony){
+					FlexGridSizer2->Add(sizer, 1, wxEXPAND);
+					sizer_ustawiony= true;
+				}
+				//...
+			\end{lstlisting}
+			\item Przeliczenie szerokości i wysokości okna dialogowego w zależności od liczby pól.
+			\begin{lstlisting}
+				//...
+				int szerokosc = gra->get_rozmiar_kwadratu() * 100;
+				int wysokosc = gra->get_rozmiar_kwadratu() * 100 + 120;
+				//...
+			\end{lstlisting}
+			\item Wyczyszczenie komunikatu użytkownika. Przypisanie do niego liczby rund. Zmiana Tekstu w StaticText1 na liczbę rund.
+			\begin{lstlisting}
+				//...
+				w.Clear();
+				liczba_rund = 1;
+				w<<"Runda ";
+				w<<liczba_rund;
+				StaticText1->SetLabel(w);
+				//...
+			\end{lstlisting}
+			\item Wyświetlenie odpowiedniej liczby serc na ekranie.
+			\begin{lstlisting}
+				//...
+				if(zycia>=1){
+					StaticBitmap1->SetBitmap(serce);
+				}
+				if(zycia>=2){
+					StaticBitmap2->SetBitmap(serce);
+				}
+				if(zycia>=3){
+					StaticBitmap3->SetBitmap(serce);
+				}
+				//...
+			\end{lstlisting}
+			\item Wyczyszczenie sekwencji użytkownika oraz komunikatu do użytkownika.
+			\begin{lstlisting}
+				//...
+				userSeq.clear();
+				w.Clear();
+				//...
+			\end{lstlisting}
+			\item Podświetlenie wybranego przycisku na 500 milisekund i wywołanie funkcji onTimer.
+			\begin{lstlisting}
+				//...
+				StanPoczatkowyPola(pola, kolory[1], false);
+				
+				wxTimer* timer = new wxTimer(this, wxID_ANY);
+				timer->StartOnce(500);
+				Connect(timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(seqDialog::OnTimer));
+				//...
+			\end{lstlisting}
+			\item Zmiana rozmiaru okna dialogowego.
+			\begin{lstlisting}
+				//...
+				UstawRozmiar(szerokosc, wysokosc);
+				//...
+			\end{lstlisting}
+		\end{itemize}
+		\item \textbf{PrzyciskMenu:} Kod funkcji PrzyciskMenu jest związany z powrotem do menu głównego gry. Oto opis kluczowych kroków w tej funkcji:
+		\begin{itemize}
+			\item Zwolenienie pamięci zajmowanej przez obiekt gra. 
+			\begin{lstlisting}
+				//...
+				if (gra != nullptr){
+					delete gra;
+					gra = nullptr;
+				}
+				//...
+			\end{lstlisting}
+			\item Usuwanie przycisków pola, wyczyszczenie wektora pola oraz sizera przechowującego te pola.
+			\begin{lstlisting}
+				//...
+				for(auto pole : pola){
+					pole->Destroy();
+				}
+				pola.clear();
+				sizer->Clear();
+				//...
+			\end{lstlisting}
+			\item Pokazanie przycisków menu, usunięcie widoku serc.
+			\begin{lstlisting}
+				//...
+				CzyMenu(true);
+				StaticBitmap1->SetBitmap(wxNullBitmap);
+				StaticBitmap2->SetBitmap(wxNullBitmap);
+				StaticBitmap3->SetBitmap(wxNullBitmap);
+				//...
+			\end{lstlisting}
+			\item Zmiana komunikatu użytkownika.
+			\begin{lstlisting}
+				//...
+				w.clear();
+				w << "WYBIERZ USTAWIENIA";
+				StaticText1->SetLabel(w);
+				//...
+			\end{lstlisting}
+			\item Zmiana rozmiaru okna dialogowego.
+			\begin{lstlisting}
+				//...
+				UstawRozmiar(240,240);
+				//...
+			\end{lstlisting}
+		\end{itemize}
+		\item \textbf{PrzyciskPole:} Funkcja PrzyciskPole obsługuje zdarzenie naciśnięcia przycisku na planszy gry. Oto kluczowe kroki tej funkcji:
+		\begin{itemize}
+			\item Pobranie id pola, które zostało kliknięte. Zamiana tego ID na numer pola w wektorze pola. Dodanie tego numeru do wektora userSeq.
+			\begin{lstlisting}
+				//...
+				int numer_pola = id2nr[event.GetId()];
+				userSeq.push_back(numer_pola);
+				//...
+			\end{lstlisting}
+			\item Sprawdzenie sekwencji użytkownika
+			\begin{lstlisting}
+				//...
+				if (userSeq.size() <= gra->seq.size()) {
+					int index = userSeq.size() - 1;
+					if (userSeq[index] != gra->seq[index]) {
+						gra->set_liczba_zyc(zycia--);
+						StanPoczatkowyPola(pola, kolory[2], false);
+						if (zycia > 0) {
+							if(zycia==2){
+								StaticBitmap1->SetBitmap(wxNullBitmap);
+							}
+							if (zycia==1){
+								StaticBitmap2->SetBitmap(wxNullBitmap);
+							}
+							Sleep(500);
+							RepeatUserSequence();
+						} else {
+							StaticBitmap3->SetBitmap(wxNullBitmap);
+							w.Clear();
+							w << L"Przegrałeś Osiągnięto limit błędów. \nZakończyłeś na rundzie " << liczba_rund;
+							wxMessageBox(w, wxString("Koniec gry"));
+						}
+					} else if (userSeq.size() == gra->seq.size()) {
+						gra->addElement();
+						
+						w.Clear();
+						liczba_rund++;
+						w << "Runda " << liczba_rund;
+						StaticText1->SetLabel(w);
+						
+						wxTimer* timer = new wxTimer(this, wxID_ANY);
+						Connect(timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(seqDialog::OnTimer));
+						timer->SetClientData(reinterpret_cast<void*>(0));  // Zainicjowanie indeksu
+						timer->Start(500, wxTIMER_ONE_SHOT);
+					
+						userSeq.clear();
+						StanPoczatkowyPola(pola, kolory[3], false);
+					}
+				}
+				//...
+			\end{lstlisting}
+			Warunek \texttt{userSeq.size() <= gra->seq.size()} sprawdza, czy długość sekwencji wprowadzonej przez użytkownika jest mniejsza lub równa długości sekwencji generowanej przez grę. To jest sprawdzane, aby upewnić się, że użytkownik nie przekroczył jeszcze długości sekwencji generowanej przez grę.
+			
+			Jeśli wystąpił błąd (czyli aktualne pole użytkownika nie zgadza się z oczekiwanym polem w sekwencji), zostaje wykonany blok kodu wewnątrz tego warunku. Wtedy:
+			\begin{itemize}
+				\item Liczba żyć (zycia) zostaje zaktualizowana.
+				\item Kolory pól są zmieniane na czerwony.
+				\item Sprawdzane jest, czy użytkownik ma jeszcze życia. Jeśli tak, aktualizuje się interfejs i powtarza się sekwencję. W przeciwnym razie, gra jest zakończona, a użytkownikowi wyświetla się komunikat o przegranej.
+			\end{itemize}
+			Jeśli długość sekwencji wprowadzonej przez użytkownika jest równa długości sekwencji generowanej przez grę, to oznacza poprawną sekwencję. Wtedy:
+			\begin{itemize}
+				\item Dodawany jest nowy element do sekwencji generowanej przez grę.
+				\item Zmieniana jest liczba rund.
+				\item Uruchamiany jest timer do podświetlania sekwencji.
+				\item Sekwencja wprowadzona przez użytkownika jest czyściszona, a kolory pól zmieniane są na zielony.
+			\end{itemize}
+		\end{itemize}
+		\item \textbf{RepeatUserSequence:} Funkcja RepeatUserSequence służy do ponownego podświetlenia sekwencji, na której zakończył użytkownik w przypadku pomyłki.
+		\begin{itemize}
+			\item Przywrócenie stanu początkowego pól.
+			\begin{lstlisting}
+				//...
+				StanPoczatkowyPola(pola, kolory[0], false);
+				//...
+			\end{lstlisting}
+			\item Ponowne podświetlenie sekwencji na której użytkownik się pomylił.
+			\begin{lstlisting}
+				//...
+				wxTimer* timer = new wxTimer(this, wxID_ANY);
+				Connect(timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(seqDialog::OnTimer));
+				timer->SetClientData(reinterpret_cast<void*>(0)); 
+				timer->Start(500, wxTIMER_ONE_SHOT);
+				//...
+			\end{lstlisting}
+			\item Wyczyszczenie sekwencji wprowadzonej przez użytkownika.
+			\begin{lstlisting}
+				//...
+				userSeq.clear();
+				//...
+			\end{lstlisting}
+		\end{itemize}
+		\item \textbf{OnTimer:} Funkcja OnTimer obsługuje zdarzenia timera. Wywoływana jest po upływie określonego czasu i odpowiedzialna jest za animowanie sekwencji.
+		\begin{itemize}
+			\item Pobiera indeks z informacji klienta przekazanej przez timer.
+			\begin{lstlisting}
+				//...
+				size_t index = reinterpret_cast<size_t>(event.GetTimer().GetClientData());
+				//...
+			\end{lstlisting}
+			Jeśli obiekt gra istnieje to:
+			\item Przywraca stan początkowy pól.
+			\begin{lstlisting}
+				//...
+				StanPoczatkowyPola(pola, kolory[0], false);
+				//...
+			\end{lstlisting}
+			Jeśli index pola klikniętego jest mniejszy od rozmiaru sekwencji gry to:
+			\item Przywróć stan początkowy poprzedniego przycisku, zanim podświetli się kolejny.
+			\begin{lstlisting}
+				//...
+				int x = gra->seq[index];
+				int poprzedni = gra->seq[index - 1];
+				pola[poprzedni]->SetBackgroundColour(kolory[0]);
+				pola[poprzedni]->Refresh();
+				pola[x]->Update();
+				Sleep(500);
+				//...
+			\end{lstlisting}
+			\item Podświetl kolejne pole.
+			\begin{lstlisting}
+				//...
+				pola[x]->SetBackgroundColour(kolory[1]);
+				pola[x]->Refresh();
+				//...
+			\end{lstlisting}
+			\item Uruchom timer ponownie, przekaż dane o indeksie o 1 większym niż wcześniej.
+			\begin{lstlisting}
+				//...
+				wxTimer* timer = new wxTimer(this, wxID_ANY);
+				Connect(timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(seqDialog::OnTimer));
+				timer->SetClientData(reinterpret_cast<void*>(index + 1));
+				timer->Start(500, wxTIMER_ONE_SHOT);
+				//...
+			\end{lstlisting}
+			Jeśli index jest wiekszy od rozmiaru sekwencji w obiekcie gry, to:
+			\item Przywróć stan początkowy pól, włącz pola.
+			\begin{lstlisting}
+				//...
+			StanPoczatkowyPola(pola, kolory[0], true);
+				//...
+			\end{lstlisting}
+		\end{itemize}
+		\item \textbf{PrzyciskZasady:} Przycisk zasady wyświetla zasady gry w MessageBoxie.
+		\item \textbf{StanPoczątkowyPola:} określa kolory pól w wektorze pola oraz włącza lub wyłącza możliwość kliknięcia w te pola.
+		\begin{lstlisting}
+			void seqDialog::StanPoczatkowyPola(std::vector<wxButton*> pola, wxColour kolor, bool wlacz){
+				for (auto pole : pola) {
+					pole->SetBackgroundColour(kolor);
+					pole->Enable(wlacz);
+				}
+			}
+		\end{lstlisting}
+		\item \textbf{CzyMenu:} pokazuje lub chowa menu w zależności od argumentu.
+		\begin{lstlisting}
+			void seqDialog::CzyMenu(bool tak){
+				StaticText2->Show(tak);
+				StaticText3->Show(tak);
+				StaticText4->Show(tak);
+				Choice1->Show(tak);
+				Choice2->Show(tak);
+				Button1->Show(tak);
+				Button3->Show(tak);
+				Button2->Show(!tak);
+			}
+		\end{lstlisting}
+		\item \textbf{UstawRozmiar} ustawia rozmiar okna dialogowego na podane argumenty.
+		\begin{lstlisting}
+			void seqDialog::UstawRozmiar(int szerokosc, int wysokosc){
+				SetClientSize(wxSize(szerokosc, wysokosc));
+				Layout();
+			}
+		\end{lstlisting}
+	\end{itemize}
+	
+	\newpage
+		\section*{Instrukcja instalacji}
+	\addcontentsline{toc}{section}{4. Instrukcja instalacji}
+	
+	Instalator gry powstał przy pomocy aplikacji Createinstall. 
+	Aby zainstalować grę należy postępować według poniższych kroków.
+	\begin{enumerate}
+		\item Uruchom pakiet instalacyjny.
+		
+		\item Zapoznaj się z wyświetlonymi informacjami, a następnie przejdź dalej, naciskając przycisk \enquote{Next}.
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.4\textwidth]{in1.png}
+			\caption{Wybór lokalizacji folderu.}
+			\label{fig:in3}
+		\end{figure}
+		
+		
+		\item Wybierz lokalizację folderu, a następnie przejdź dalej.
+		
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.4\textwidth]{in2.png}
+			\caption{Wybór lokalizacji folderu.}
+			\label{fig:in2}
+		\end{figure}
+		
+		\item Poczekaj, aż aplikacja zostanie zainstalowana. W każdej chwili możesz przerwać ten proces, używając przycisku \enquote{Canel}.
+		
+		\item Na zakończenie pojawi się okno dialogowe, informujące o pomyślnym zakończeniu aplikacji. Aby zakończyć cały proces naciśnij \enquote{Finish} .
+		\item Uruchom grę i ciesz się rozgrywką. 
+		
+		\begin{figure}[h]
+			\centering
+			\begin{subfigure}{0.45\textwidth}
+				\centering
+				\includegraphics[width=\linewidth]{in3.png}
+				\caption{Instalacja}
+				\label{fig:in3}
+			\end{subfigure}
+			\hfill
+			\begin{subfigure}{0.45\textwidth}
+				\centering
+				\includegraphics[width=\linewidth]{in4.png}
+				\caption{Zakończenie instalacji}
+				\label{fig:in4}
+			\end{subfigure}
+		\end{figure}
+	\end{enumerate}
+
+	\newpage
+	
+\clearpage
+	
+	
+\section*{Podsumowanie}
+	\addcontentsline{toc}{section}{6. Podsumowanie}
+
+	Gra Sequence Memory wyróżnia się estetycznymi elementami wizualnymi, jal również dynamicznym i intuicyjnym interfejsem graficznym, co ułatwia użytkowikom szybkie przyswajanie zasad. Generowanie różnych rodzajów sekwencji na trzech poziomach trudności zapewnia graczom nowe wyzwania.
+	
+	\enquote{Sequence Memory} to nie tylko gra, ale także narzędzie rozwijające umiejętności kognitywne graczy w atrakcyjny sposób. Wzbogacona o elementy edukacyjne, stanowi idealną propozycję dla tych, którzy chcą jednocześnie bawić się i rozwijać własne zdolności pamięciowe.Warto wspomnieć, że nie ma określonego przedziału wiekowego osób, mogących korzystać z aplikacji. Każdy znajdzie bowiem odpowiednie ustawienia dla siebie.
+\end{document}
